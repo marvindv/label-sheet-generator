@@ -48,7 +48,7 @@ export function LocationsPage() {
 
   const [previewModelOpened, setPreviewModelOpened] = useState(false);
 
-  const handleLocationFormValueChange = (newValue: LocationsFormValue | undefined) => {
+  const handleLocationsFormValueChange = (newValue: LocationsFormValue | undefined) => {
     localStorage.setItem(locationsFormLocalStorageKey, JSON.stringify(newValue || []));
     setFormValue(newValue);
   };
@@ -63,7 +63,7 @@ export function LocationsPage() {
       <SheetConfigForm initialValue={herma5076} onValueChange={(val) => setSheetConfig(val)} />
       <LocationsForm
         defaultValue={JSON.parse(localStorage.getItem(locationsFormLocalStorageKey) || '[]')}
-        onValueChange={handleLocationFormValueChange}
+        onValueChange={handleLocationsFormValueChange}
       />
 
       {/* Hidden div that contains the rendered sheet to print. */}
