@@ -4,23 +4,26 @@ import { useReactToPrint } from 'react-to-print';
 import { Button, Center, Container, Modal, Stack, Text, Title } from '@mantine/core';
 import { LocationsForm, LocationsFormValue } from '@/components/LocationsForm/LocationsForm';
 import Sheet, { CellContent, SheetConfig } from '@/components/Sheet/Sheet';
+import { SheetConfigForm } from '@/components/SheetConfigForm/SheetConfigForm';
 
 const herma5076: SheetConfig = {
   columns: 2,
   rows: 7,
-  // As advertised:
-  // bodyPadding: '15.15mm 4.67mm 15.15mm 4.67mm',
-  // As measured:
-  bodyPadding: '16mm 4.67mm 16mm 4.67mm',
-  // The cell margin of every cell:not(:first-of-type)
-  // cellMargin: "0mm 0mm 0mm 2.54mm",
-  cellHorizontalGap: '2.54mm',
-  cellVerticalGap: '0mm',
-  cellWidth: '99.06mm',
-  cellHeight: '38.1mm',
-  cellPadding: '5mm 5mm 5mm 5mm',
-  pageWidth: '210mm',
-  pageHeight: '297mm',
+  bodyPaddingTop: 15.15,
+  bodyPaddingRight: 4.67,
+  bodyPaddingBottom: 15.15,
+  bodyPaddingLeft: 4.67,
+  cellHorizontalGap: 2.54,
+  cellVerticalGap: 0,
+  cellWidth: 99.06,
+  cellHeight: 38.1,
+  cellPaddingTop: 5,
+  cellPaddingRight: 5,
+  cellPaddingBottom: 5,
+  cellPaddingLeft: 5,
+  pageWidth: 210,
+  pageHeight: 297,
+  unit: 'mm',
 };
 
 const locationsFormLocalStorageKey = 'homebox-label-sheet-generator/locations/form/location';
@@ -57,6 +60,7 @@ export function LocationsPage() {
         Generate a sheet containing a number of stickers that show a multiline description and an qr
         code leading to the specified link.
       </Text>
+      <SheetConfigForm initialValue={herma5076} onValueChange={(val) => setSheetConfig(val)} />
       <LocationsForm
         defaultValue={JSON.parse(localStorage.getItem(locationsFormLocalStorageKey) || '[]')}
         onValueChange={handleLocationFormValueChange}

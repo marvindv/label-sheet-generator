@@ -2,22 +2,24 @@ import React from 'react';
 import QRCode from 'react-qr-code';
 import { Group } from '@mantine/core';
 
-export type TopRightBottomLeftMeasurement = string;
-export type AtomicMeasurement = string;
-
 export interface SheetConfig {
   columns: number;
   rows: number;
-  bodyPadding: TopRightBottomLeftMeasurement;
-  // The cell margin of every cell:not(:first-of-type)
-  // cellMargin: "0mm 0mm 0mm 2.54mm",
-  cellHorizontalGap: AtomicMeasurement;
-  cellVerticalGap: AtomicMeasurement;
-  cellWidth: AtomicMeasurement;
-  cellHeight: AtomicMeasurement;
-  cellPadding: TopRightBottomLeftMeasurement;
-  pageWidth: AtomicMeasurement;
-  pageHeight: AtomicMeasurement;
+  bodyPaddingTop: number;
+  bodyPaddingRight: number;
+  bodyPaddingBottom: number;
+  bodyPaddingLeft: number;
+  cellHorizontalGap: number;
+  cellVerticalGap: number;
+  cellWidth: number;
+  cellHeight: number;
+  cellPaddingTop: number;
+  cellPaddingRight: number;
+  cellPaddingBottom: number;
+  cellPaddingLeft: number;
+  pageWidth: number;
+  pageHeight: number;
+  unit: 'mm';
 }
 
 export interface BaseCellContent {
@@ -46,6 +48,16 @@ function SheetCell(props: {
   content: CellContent;
 }) {
   const { columnIndex, rowIndex, config, showBorders, content } = props;
+  const {
+    cellWidth,
+    cellHorizontalGap,
+    cellHeight,
+    cellPaddingTop,
+    cellPaddingRight,
+    cellPaddingBottom,
+    cellPaddingLeft,
+    unit,
+  } = config;
   let inner;
   if (content.type === 'qr-code-with-description') {
     inner = (
@@ -69,12 +81,13 @@ function SheetCell(props: {
     <div
       style={{
         position: 'absolute',
-        left: `calc((${columnIndex} * ${config.cellWidth}) + (${columnIndex} * ${config.cellHorizontalGap}))`,
-        top: `calc(${rowIndex} * ${config.cellHeight})`,
+        left: `calc((${columnIndex} * ${cellWidth}${unit}) + (${columnIndex} * ${cellHorizontalGap}${unit}))`,
+        top: `calc(${rowIndex} * ${cellHeight}${unit})`,
         //backgroundColor: 'rgba(200, 0, 0, 0.25)',
-        width: config.cellWidth,
-        height: config.cellHeight,
-        padding: config.cellPadding,
+        width: `${cellWidth}${unit}`,
+        height: `${cellHeight}${unit}`,
+        //padding: cellPadding,
+        padding: `${cellPaddingTop}${unit} ${cellPaddingRight}${unit} ${cellPaddingBottom}${unit} ${cellPaddingLeft}${unit}`,
         border: showBorders ? '1px solid black' : '0',
         borderRadius: '10px',
       }}
@@ -92,13 +105,21 @@ export interface Props {
 
 export const Sheet = React.forwardRef((props: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   const { config, showBorders, elements } = props;
+  const {
+    bodyPaddingTop,
+    bodyPaddingRight,
+    bodyPaddingBottom,
+    bodyPaddingLeft,
+    pageWidth,
+    pageHeight,
+    unit,
+  } = config;
 
   const style: React.CSSProperties = {
     margin: 0,
-    padding: config.bodyPadding,
-    //backgroundColor: 'gray',
-    width: config.pageWidth,
-    height: config.pageHeight,
+    padding: `${bodyPaddingTop}${unit} ${bodyPaddingRight}${unit} ${bodyPaddingBottom}${unit} ${bodyPaddingLeft}${unit}`,
+    width: `${pageWidth}${unit}`,
+    height: `${pageHeight}${unit}`,
     position: 'relative',
     border: showBorders ? '1px solid black' : '',
   };
