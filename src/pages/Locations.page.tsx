@@ -35,7 +35,13 @@ export function LocationsPage() {
   const sheetRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({ contentRef: sheetRef });
 
-  const [formValue, setFormValue] = useState<LocationsFormValue | undefined>(undefined);
+  const initialLocationsFormValue = useMemo(
+    () => JSON.parse(localStorage.getItem(locationsFormLocalStorageKey) || '[]'),
+    []
+  );
+  const [formValue, setFormValue] = useState<LocationsFormValue | undefined>(
+    initialLocationsFormValue
+  );
   const elements = useMemo(
     () =>
       formValue?.map((el) => ({
@@ -62,7 +68,7 @@ export function LocationsPage() {
       </Text>
       <SheetConfigForm initialValue={herma5076} onValueChange={(val) => setSheetConfig(val)} />
       <LocationsForm
-        defaultValue={JSON.parse(localStorage.getItem(locationsFormLocalStorageKey) || '[]')}
+        defaultValue={initialLocationsFormValue}
         onValueChange={handleLocationsFormValueChange}
       />
 
