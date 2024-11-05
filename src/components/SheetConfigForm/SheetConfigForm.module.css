@@ -1,0 +1,5 @@
+.topRightBottomLeftFields {
+  @media (min-width: $mantine-breakpoint-sm) {
+    text-align: center;
+  }
+}
