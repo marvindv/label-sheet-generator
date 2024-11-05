@@ -1,4 +1,4 @@
-import { IconDots, IconEye, IconFileZip, IconTrash } from '@tabler/icons-react';
+import { IconCaretDownFilled, IconCaretUpFilled } from '@tabler/icons-react';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { z } from 'zod';
 import {
@@ -8,12 +8,12 @@ import {
   Grid,
   Group,
   InputLabel,
-  Menu,
   NumberInput,
   rem,
   Text,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useDisclosure } from '@mantine/hooks';
 import { SheetConfig } from '../Sheet/Sheet';
 import classes from './SheetConfigForm.module.css';
 
@@ -56,41 +56,33 @@ export function SheetConfigForm(props: Props) {
   });
 
   const unit = form.getValues().unit;
+  const [opened, { toggle }] = useDisclosure(false);
 
   return (
     <form>
-      <Card shadow="sm" padding="lg" radius="md" withBorder>
-        <Card.Section withBorder inheritPadding py="xs">
+      <Card shadow="sm" radius="md" withBorder>
+        <Card.Section
+          withBorder={opened}
+          inheritPadding
+          mt="0"
+          pb={opened ? 'var(--card-padding)' : undefined}
+        >
           <Group justify="space-between">
             <Text fw={500}>Sheet configuration</Text>
-            <Menu withinPortal position="bottom-end" shadow="sm">
-              <Menu.Target>
-                <ActionIcon variant="subtle" color="gray">
-                  <IconDots style={{ width: rem(16), height: rem(16) }} />
-                </ActionIcon>
-              </Menu.Target>
-
-              <Menu.Dropdown>
-                <Menu.Item
-                  leftSection={<IconFileZip style={{ width: rem(14), height: rem(14) }} />}
-                >
-                  Download zip
-                </Menu.Item>
-                <Menu.Item leftSection={<IconEye style={{ width: rem(14), height: rem(14) }} />}>
-                  Preview all
-                </Menu.Item>
-                <Menu.Item
-                  leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
-                  color="red"
-                >
-                  Delete all
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
+            <ActionIcon onClick={toggle} color="gray" variant="subtle">
+              {opened && <IconCaretDownFilled style={{ width: rem(16), height: rem(16) }} />}
+              {!opened && <IconCaretUpFilled style={{ width: rem(16), height: rem(16) }} />}
+            </ActionIcon>
           </Group>
         </Card.Section>
 
-        <Card.Section inheritPadding withBorder pt="md" pb="lg">
+        <Card.Section
+          display={opened ? undefined : 'none'}
+          inheritPadding
+          withBorder
+          pt="md"
+          pb="lg"
+        >
           <Fieldset legend="Sheet Format" variant="unstyled">
             <Grid>
               <Grid.Col span={{ base: 12, md: 6 }}>
@@ -223,7 +215,13 @@ export function SheetConfigForm(props: Props) {
             </Grid>
           </Fieldset>
         </Card.Section>
-        <Card.Section inheritPadding withBorder pt="md" pb="lg">
+        <Card.Section
+          display={opened ? undefined : 'none'}
+          inheritPadding
+          withBorder
+          pt="md"
+          pb="lg"
+        >
           <Fieldset legend="Cell Format" variant="unstyled">
             <Grid>
               <Grid.Col span={{ base: 12, md: 6 }}>
