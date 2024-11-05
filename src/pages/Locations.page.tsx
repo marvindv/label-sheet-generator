@@ -64,7 +64,7 @@ export function LocationsPage() {
       <Title order={1}>Description and URLs</Title>
       <Text mb="lg" c="gray" size="lg">
         Generate a sheet containing a number of stickers that show a multiline description and an qr
-        code leading to the specified link.
+        code leading to a configured link.
       </Text>
       <SheetConfigForm initialValue={herma5076} onValueChange={(val) => setSheetConfig(val)} />
       <LocationsForm
