@@ -37,7 +37,7 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: '**/yarn.lock'
       - name: Install dependencies
-        run: yarn install --immutable --immutable-cache --check-cache
+        run: yarn install --immutable --immutable-cache
       - name: Build
         run: yarn build
       - name: Setup Pages
