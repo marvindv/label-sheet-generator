@@ -11,10 +11,8 @@ const locationsFormLocalStorageKey = 'homebox-label-sheet-generator/locations/fo
 
 export function LocationsPage() {
   const [sheetConfig, setSheetConfig] = useState<SheetConfig>(() => {
-    console.log('loadItem');
     const existingValue = localStorage.getItem(sheetConfigFormLocalStorageKey);
     if (existingValue) {
-      console.log('existingValue');
       return JSON.parse(existingValue);
     }
 
@@ -45,7 +43,6 @@ export function LocationsPage() {
   const [previewModelOpened, setPreviewModelOpened] = useState(false);
 
   const handleSheetConfigFormValueChange = (newValue: SheetConfig) => {
-    console.log('setItem');
     localStorage.setItem(sheetConfigFormLocalStorageKey, JSON.stringify(newValue));
     setSheetConfig(newValue);
   };
