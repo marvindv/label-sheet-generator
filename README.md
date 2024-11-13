@@ -1,4 +1,4 @@
-# Mantine Vite template
+# Label Sheet Generator
 
 ## Features
 

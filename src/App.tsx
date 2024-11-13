@@ -68,7 +68,7 @@ function InnerRoot() {
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <IconPrinter size={30} /> <Text fw={500}>Homebox Label Sheet Generator</Text>
+          <IconPrinter size={30} /> <Text fw={500}>Label Sheet Generator</Text>
         </Group>
       </AppShell.Header>
 

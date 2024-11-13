@@ -6,8 +6,8 @@ import { LocationsForm, LocationsFormValue } from '@/components/LocationsForm/Lo
 import Sheet, { CellContent, SHEET_PRESETS, SheetConfig } from '@/components/Sheet/Sheet';
 import { SheetConfigForm } from '@/components/SheetConfigForm/SheetConfigForm';
 
-const sheetConfigFormLocalStorageKey = 'homebox-label-sheet-generator/locations/form/sheetConfig';
-const locationsFormLocalStorageKey = 'homebox-label-sheet-generator/locations/form/location';
+const sheetConfigFormLocalStorageKey = 'label-sheet-generator/locations/form/sheetConfig';
+const locationsFormLocalStorageKey = 'label-sheet-generator/locations/form/location';
 
 export function LocationsPage() {
   const [sheetConfig, setSheetConfig] = useState<SheetConfig>(() => {
