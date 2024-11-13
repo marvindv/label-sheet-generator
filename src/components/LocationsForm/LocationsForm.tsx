@@ -30,7 +30,7 @@ export function LocationsForm(props: Props) {
   });
 
   const fields = form.getValues().locations?.map((item, index) => (
-    <Group key={index}>
+    <Group key={item.randomId}>
       <Textarea
         flex={1}
         label="Description"
