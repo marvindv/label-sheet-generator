@@ -20,18 +20,23 @@ import { useDisclosure } from '@mantine/hooks';
 import { LocationsPage } from './pages/Locations.page';
 import { theme } from './theme';
 
-const router = createBrowserRouter([
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <Root />,
+      children: [
+        {
+          path: 'locations',
+          element: <LocationsPage />,
+        },
+      ],
+    },
+  ],
   {
-    path: '/',
-    element: <Root />,
-    children: [
-      {
-        path: 'locations',
-        element: <LocationsPage />,
-      },
-    ],
-  },
-]);
+    basename: '/label-sheet-generator',
+  }
+);
 
 export default function App() {
   return <RouterProvider router={router} />;
