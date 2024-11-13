@@ -1,26 +1,29 @@
 import React from 'react';
 import QRCode from 'react-qr-code';
+import { z } from 'zod';
 import { Group } from '@mantine/core';
 
-export interface SheetConfig {
-  columns: number;
-  rows: number;
-  bodyPaddingTop: number;
-  bodyPaddingRight: number;
-  bodyPaddingBottom: number;
-  bodyPaddingLeft: number;
-  cellHorizontalGap: number;
-  cellVerticalGap: number;
-  cellWidth: number;
-  cellHeight: number;
-  cellPaddingTop: number;
-  cellPaddingRight: number;
-  cellPaddingBottom: number;
-  cellPaddingLeft: number;
-  pageWidth: number;
-  pageHeight: number;
-  unit: 'mm';
-}
+export const sheetConfigSchema = z.object({
+  columns: z.number(),
+  rows: z.number(),
+  bodyPaddingTop: z.number(),
+  bodyPaddingRight: z.number(),
+  bodyPaddingBottom: z.number(),
+  bodyPaddingLeft: z.number(),
+  cellHorizontalGap: z.number(),
+  cellVerticalGap: z.number(),
+  cellWidth: z.number(),
+  cellHeight: z.number(),
+  cellPaddingTop: z.number(),
+  cellPaddingRight: z.number(),
+  cellPaddingBottom: z.number(),
+  cellPaddingLeft: z.number(),
+  pageWidth: z.number(),
+  pageHeight: z.number(),
+  unit: z.literal('mm'),
+});
+
+export type SheetConfig = z.infer<typeof sheetConfigSchema>;
 
 export const SHEET_PRESETS_NICE_NAMES = {
   herma5076: 'HERMA 5076',
