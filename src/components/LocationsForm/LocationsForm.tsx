@@ -4,6 +4,7 @@ import { useForm } from '@mantine/form';
 import { randomId } from '@mantine/hooks';
 
 export interface Props {
+  className?: string;
   defaultValue: FormValues['locations'];
   onValueChange: (newValue: FormValues['locations']) => void;
 }
@@ -30,7 +31,7 @@ export function LocationsForm(props: Props) {
   });
 
   const fields = form.getValues().locations?.map((item, index) => (
-    <Group key={item.randomId}>
+    <Group key={item.randomId} mt="sm">
       <Textarea
         flex={1}
         label="Description"
@@ -80,7 +81,7 @@ export function LocationsForm(props: Props) {
   ));
 
   return (
-    <form>
+    <form className={props.className}>
       {fields}
 
       <Button

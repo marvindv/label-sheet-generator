@@ -1,35 +1,25 @@
 import { useMemo, useRef, useState } from 'react';
 import { IconPrinter } from '@tabler/icons-react';
 import { useReactToPrint } from 'react-to-print';
-import { Button, Center, Container, Modal, Stack, Text, Title } from '@mantine/core';
+import { Box, Button, Center, Container, Modal, Stack, Text, Title } from '@mantine/core';
 import { LocationsForm, LocationsFormValue } from '@/components/LocationsForm/LocationsForm';
-import Sheet, { CellContent, SheetConfig } from '@/components/Sheet/Sheet';
+import Sheet, { CellContent, SHEET_PRESETS, SheetConfig } from '@/components/Sheet/Sheet';
 import { SheetConfigForm } from '@/components/SheetConfigForm/SheetConfigForm';
 
-const herma5076: SheetConfig = {
-  columns: 2,
-  rows: 7,
-  bodyPaddingTop: 15.15,
-  bodyPaddingRight: 4.67,
-  bodyPaddingBottom: 15.15,
-  bodyPaddingLeft: 4.67,
-  cellHorizontalGap: 2.54,
-  cellVerticalGap: 0,
-  cellWidth: 99.06,
-  cellHeight: 38.1,
-  cellPaddingTop: 5,
-  cellPaddingRight: 5,
-  cellPaddingBottom: 5,
-  cellPaddingLeft: 5,
-  pageWidth: 210,
-  pageHeight: 297,
-  unit: 'mm',
-};
-
+const sheetConfigFormLocalStorageKey = 'homebox-label-sheet-generator/locations/form/sheetConfig';
 const locationsFormLocalStorageKey = 'homebox-label-sheet-generator/locations/form/location';
 
 export function LocationsPage() {
-  const [sheetConfig, setSheetConfig] = useState<SheetConfig>(herma5076);
+  const [sheetConfig, setSheetConfig] = useState<SheetConfig>(() => {
+    console.log('loadItem');
+    const existingValue = localStorage.getItem(sheetConfigFormLocalStorageKey);
+    if (existingValue) {
+      console.log('existingValue');
+      return JSON.parse(existingValue);
+    }
+
+    return SHEET_PRESETS.herma5076;
+  });
   const [showBorders, setShowBorders] = useState(true);
 
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -54,6 +44,12 @@ export function LocationsPage() {
 
   const [previewModelOpened, setPreviewModelOpened] = useState(false);
 
+  const handleSheetConfigFormValueChange = (newValue: SheetConfig) => {
+    console.log('setItem');
+    localStorage.setItem(sheetConfigFormLocalStorageKey, JSON.stringify(newValue));
+    setSheetConfig(newValue);
+  };
+
   const handleLocationsFormValueChange = (newValue: LocationsFormValue | undefined) => {
     localStorage.setItem(locationsFormLocalStorageKey, JSON.stringify(newValue || []));
     setFormValue(newValue);
@@ -66,11 +62,16 @@ export function LocationsPage() {
         Generate a sheet containing a number of stickers that show a multiline description and an qr
         code leading to a configured link.
       </Text>
-      <SheetConfigForm initialValue={herma5076} onValueChange={(val) => setSheetConfig(val)} />
-      <LocationsForm
-        defaultValue={initialLocationsFormValue}
-        onValueChange={handleLocationsFormValueChange}
+      <SheetConfigForm
+        initialValue={sheetConfig}
+        onValueChange={handleSheetConfigFormValueChange}
       />
+      <Box mt="lg">
+        <LocationsForm
+          defaultValue={initialLocationsFormValue}
+          onValueChange={handleLocationsFormValueChange}
+        />
+      </Box>
 
       {/* Hidden div that contains the rendered sheet to print. */}
       <div style={{ display: 'none' }}>

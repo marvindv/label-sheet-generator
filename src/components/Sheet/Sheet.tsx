@@ -22,6 +22,38 @@ export interface SheetConfig {
   unit: 'mm';
 }
 
+export const SHEET_PRESETS_NICE_NAMES = {
+  herma5076: 'HERMA 5076',
+};
+
+export const SHEET_PRESETS: { [name in keyof typeof SHEET_PRESETS_NICE_NAMES]: SheetConfig } = {
+  herma5076: {
+    columns: 2,
+    rows: 7,
+    bodyPaddingTop: 15.15,
+    bodyPaddingRight: 4.67,
+    bodyPaddingBottom: 15.15,
+    bodyPaddingLeft: 4.67,
+    cellHorizontalGap: 2.54,
+    cellVerticalGap: 0,
+    cellWidth: 99.06,
+    cellHeight: 38.1,
+    cellPaddingTop: 5,
+    cellPaddingRight: 5,
+    cellPaddingBottom: 5,
+    cellPaddingLeft: 5,
+    pageWidth: 210,
+    pageHeight: 297,
+    unit: 'mm',
+  },
+};
+
+export type SheetPresetKey = keyof typeof SHEET_PRESETS;
+
+export const SHEET_PRESET_KEYS = Object.keys(SHEET_PRESETS).sort((a, b) =>
+  a.localeCompare(b)
+) as SheetPresetKey[];
+
 export interface BaseCellContent {
   type: string;
   description: string;

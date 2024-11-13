@@ -1,8 +1,11 @@
+import { useMemo, useState } from 'react';
 import { IconCaretDownFilled, IconCaretUpFilled } from '@tabler/icons-react';
+import deepEqual from 'deep-equal';
 import { zodResolver } from 'mantine-form-zod-resolver';
 import { z } from 'zod';
 import {
   ActionIcon,
+  Button,
   Card,
   Fieldset,
   Grid,
@@ -10,11 +13,18 @@ import {
   InputLabel,
   NumberInput,
   rem,
+  Select,
   Text,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import { SheetConfig } from '../Sheet/Sheet';
+import {
+  SHEET_PRESET_KEYS,
+  SHEET_PRESETS,
+  SHEET_PRESETS_NICE_NAMES,
+  SheetConfig,
+  SheetPresetKey,
+} from '../Sheet/Sheet';
 import classes from './SheetConfigForm.module.css';
 
 export interface Props {
@@ -44,6 +54,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function SheetConfigForm(props: Props) {
+  const [currentFormValue, setCurrentFormValue] = useState<FormData>(props.initialValue);
   const form = useForm<FormData>({
     mode: 'uncontrolled',
     initialValues: {
@@ -51,12 +62,31 @@ export function SheetConfigForm(props: Props) {
     },
     validate: zodResolver(schema),
     onValuesChange(values) {
+      setCurrentFormValue(values);
       props.onValueChange(values);
     },
   });
 
+  const configNiceName = useMemo(() => {
+    for (const presetKey of SHEET_PRESET_KEYS) {
+      if (deepEqual(SHEET_PRESETS[presetKey], currentFormValue)) {
+        return SHEET_PRESETS_NICE_NAMES[presetKey];
+      }
+    }
+
+    return null;
+  }, [currentFormValue]);
+
   const unit = form.getValues().unit;
   const [opened, { toggle }] = useDisclosure(false);
+  const [loadPresetKey, setLoadPresetKey] = useState<string | null>(null);
+
+  const handleLoadPresetClick = () => {
+    const newValue = SHEET_PRESETS[loadPresetKey as SheetPresetKey];
+    form.setValues(newValue);
+    //props.onValueChange(newValue);
+    setLoadPresetKey(null);
+  };
 
   return (
     <form>
@@ -68,12 +98,39 @@ export function SheetConfigForm(props: Props) {
           pb={opened ? 'var(--card-padding)' : undefined}
         >
           <Group justify="space-between">
-            <Text fw={500}>Sheet configuration</Text>
+            <Text fw={500}>
+              Sheet configuration
+              <Text c="dimmed" span>
+                : {configNiceName || 'Custom'}
+              </Text>
+            </Text>
             <ActionIcon onClick={toggle} color="gray" variant="subtle">
               {opened && <IconCaretDownFilled style={{ width: rem(16), height: rem(16) }} />}
               {!opened && <IconCaretUpFilled style={{ width: rem(16), height: rem(16) }} />}
             </ActionIcon>
           </Group>
+        </Card.Section>
+
+        <Card.Section
+          display={opened ? undefined : 'none'}
+          inheritPadding
+          withBorder
+          pt="md"
+          pb="lg"
+        >
+          <Select
+            label="Load a sheet preset"
+            placeholder="Pick preset"
+            data={SHEET_PRESET_KEYS.map((key) => ({
+              label: SHEET_PRESETS_NICE_NAMES[key],
+              value: key,
+            }))}
+            value={loadPresetKey}
+            onChange={setLoadPresetKey}
+          />
+          <Button mt="sm" disabled={!loadPresetKey} onClick={() => handleLoadPresetClick()}>
+            Load
+          </Button>
         </Card.Section>
 
         <Card.Section
