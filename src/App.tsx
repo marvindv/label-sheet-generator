@@ -2,7 +2,7 @@ import '@mantine/core/styles.css';
 
 import { IconListTree, IconPrinter } from '@tabler/icons-react';
 import {
-  createBrowserRouter,
+  createHashRouter,
   Navigate,
   Outlet,
   RouterProvider,
@@ -21,7 +21,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { LocationsPage } from './pages/Locations.page';
 import { theme } from './theme';
 
-const router = createBrowserRouter(
+const router = createHashRouter(
   [
     {
       path: '/',
@@ -39,7 +39,7 @@ const router = createBrowserRouter(
     },
   ],
   {
-    basename: '/label-sheet-generator',
+    basename: '/',
   }
 );
 
