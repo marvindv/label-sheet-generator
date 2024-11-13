@@ -70,7 +70,7 @@ export interface EmptyCellContent extends BaseCellContent {
   description: '';
 }
 
-export type CellContent = QrCodeDescriptionCellContent | BaseCellContent | EmptyCellContent;
+export type CellContent = QrCodeDescriptionCellContent | EmptyCellContent;
 
 function SheetCell(props: {
   columnIndex: number;

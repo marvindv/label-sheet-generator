@@ -30,13 +30,13 @@ export function LocationsPage() {
   const [formValue, setFormValue] = useState<LocationsFormValue | undefined>(
     initialLocationsFormValue
   );
-  const elements = useMemo(
+  const elements = useMemo<CellContent[]>(
     () =>
       formValue?.map((el) => ({
-        type: 'qr-code-with-description' as string,
+        type: 'qr-code-with-description',
         description: el.description || '',
         qrCodeText: el.url || '',
-      })) ?? ([] as CellContent[]),
+      })) ?? [],
     [formValue]
   );
 
