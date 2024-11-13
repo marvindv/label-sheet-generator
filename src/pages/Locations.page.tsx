@@ -127,8 +127,8 @@ export function LocationsPage() {
     <Container>
       <Title order={1}>Description and URLs</Title>
       <Text mb="lg" c="gray" size="lg">
-        Generate a sheet containing a number of stickers that show a multiline description and an qr
-        code leading to a configured link.
+        Generate a sheet containing a number of stickers that show a multiline markdown enabled
+        description and an QR code leading to a configured link.
       </Text>
       <Flex justify="flex-end" mb="lg">
         <FileButton onChange={handleImport} accept="application/json">

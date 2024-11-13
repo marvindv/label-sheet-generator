@@ -1,7 +1,9 @@
 import React from 'react';
+import Markdown from 'react-markdown';
 import QRCode from 'react-qr-code';
 import { z } from 'zod';
 import { Group } from '@mantine/core';
+import classes from './Sheet.module.css';
 
 export const sheetConfigSchema = z.object({
   columns: z.number(),
@@ -105,7 +107,9 @@ function SheetCell(props: {
             value={content.qrCodeText}
           />
         </div>
-        <div style={{ flex: 1, whiteSpace: 'break-spaces' }}>{content.description}</div>
+        <div style={{ flex: 1 }}>
+          <Markdown className={classes.markdown}>{content.description}</Markdown>
+        </div>
       </Group>
     );
   } else {
