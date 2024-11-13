@@ -3,6 +3,7 @@ import '@mantine/core/styles.css';
 import { IconListTree, IconPrinter } from '@tabler/icons-react';
 import {
   createBrowserRouter,
+  Navigate,
   Outlet,
   RouterProvider,
   NavLink as RRDNavLink,
@@ -26,6 +27,10 @@ const router = createBrowserRouter(
       path: '/',
       element: <Root />,
       children: [
+        {
+          path: '/',
+          element: <Navigate to="/locations" />,
+        },
         {
           path: 'locations',
           element: <LocationsPage />,
