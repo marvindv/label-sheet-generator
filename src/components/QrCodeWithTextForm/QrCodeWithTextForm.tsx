@@ -20,66 +20,66 @@ export interface Props {
    * @param setFormValue
    * @returns
    */
-  registerSetFormValue?: (setFormValue: (newValue: FormValues['locations']) => void) => void;
-  defaultValue: FormValues['locations'];
-  onValueChange: (newValue: FormValues['locations']) => void;
+  registerSetFormValue?: (setFormValue: (newValue: FormValues['entries']) => void) => void;
+  defaultValue: FormValues['entries'];
+  onValueChange: (newValue: FormValues['entries']) => void;
 }
 
-export type LocationsFormValue = {
-  description?: string;
-  url?: string;
+export type QrCodeWithTextFormValue = {
+  text?: string;
+  qrCodeContent?: string;
   randomId: string;
 }[];
 
 type FormValues = {
-  locations?: LocationsFormValue;
+  entries?: QrCodeWithTextFormValue;
 };
 
-export function LocationsForm(props: Props) {
+export function QrCodeWithTextForm(props: Props) {
   const form = useForm<FormValues>({
     mode: 'uncontrolled',
     initialValues: {
-      locations: props.defaultValue,
+      entries: props.defaultValue,
     },
     onValuesChange(values) {
-      props.onValueChange(values.locations);
+      props.onValueChange(values.entries);
     },
   });
 
   useEffect(() => {
     props.registerSetFormValue?.((newValue) => {
-      form.setValues({ locations: newValue });
-      form.resetDirty({ locations: newValue });
+      form.setValues({ entries: newValue });
+      form.resetDirty({ entries: newValue });
     });
   }, []);
 
-  const fields = form.getValues().locations?.map((item, index) => (
+  const fields = form.getValues().entries?.map((item, index) => (
     <Group key={item.randomId} mt="sm">
       <Textarea
         flex={1}
-        label="Description"
-        placeholder="Description"
-        key={form.key(`locations.${index}.description`)}
-        {...form.getInputProps(`locations.${index}.description`)}
+        label="Text"
+        placeholder="Text"
+        key={form.key(`entries.${index}.text`)}
+        {...form.getInputProps(`entries.${index}.text`)}
         autosize
       />
       <TextInput
         flex={1}
         style={{ alignSelf: 'end' }}
-        label="URL"
-        placeholder="URL"
-        key={form.key(`locations.${index}.url`)}
-        {...form.getInputProps(`locations.${index}.url`)}
+        label="QR Code Content"
+        placeholder="QR Code Content"
+        key={form.key(`entries.${index}.qrCodeContent`)}
+        {...form.getInputProps(`entries.${index}.qrCodeContent`)}
       />
       <ActionIcon
         variant="light"
         aria-label="Duplicate"
         onClick={() =>
           form.insertListItem(
-            'locations',
+            'entries',
             {
-              description: form.getValues().locations?.[index].description,
-              url: form.getValues().locations?.[index].url,
+              text: form.getValues().entries?.[index].text,
+              qrCodeContent: form.getValues().entries?.[index].qrCodeContent,
               randomId: randomId(),
             },
             index + 1
@@ -94,7 +94,7 @@ export function LocationsForm(props: Props) {
         variant="light"
         color="red"
         aria-label="Trash"
-        onClick={() => form.removeListItem('locations', index)}
+        onClick={() => form.removeListItem('entries', index)}
         style={{ alignSelf: 'end' }}
         size="lg"
       >
@@ -111,9 +111,9 @@ export function LocationsForm(props: Props) {
         variant="light"
         mt="md"
         onClick={() =>
-          form.insertListItem('locations', {
-            description: '',
-            url: '',
+          form.insertListItem('entries', {
+            text: '',
+            qrCodeContent: '',
             randomId: randomId(),
           })
         }

@@ -18,7 +18,7 @@ import {
   useMantineColorScheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { LocationsPage } from './pages/Locations.page';
+import { TextQrCodePage } from './pages/QrCodeWithText.page';
 import { theme } from './theme';
 
 const router = createHashRouter(
@@ -29,11 +29,11 @@ const router = createHashRouter(
       children: [
         {
           path: '/',
-          element: <Navigate to="/locations" />,
+          element: <Navigate to="/qr-code-with-text" />,
         },
         {
-          path: 'locations',
-          element: <LocationsPage />,
+          path: 'qr-code-with-text',
+          element: <TextQrCodePage />,
         },
       ],
     },
@@ -85,8 +85,8 @@ function InnerRoot() {
       <AppShell.Navbar p="md">
         <NavLink
           component={RRDNavLink}
-          to="/locations"
-          label="Descriptions and URLs"
+          to="/qr-code-with-text"
+          label="QR Code with Text"
           leftSection={<IconListTree size="1rem" stroke={1.5} />}
         />
       </AppShell.Navbar>
