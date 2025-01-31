@@ -6,22 +6,23 @@ import { Group } from '@mantine/core';
 import classes from './Sheet.module.css';
 
 export const sheetConfigSchema = z.object({
-  columns: z.number(),
-  rows: z.number(),
-  bodyPaddingTop: z.number(),
-  bodyPaddingRight: z.number(),
-  bodyPaddingBottom: z.number(),
-  bodyPaddingLeft: z.number(),
-  cellHorizontalGap: z.number(),
-  cellVerticalGap: z.number(),
-  cellWidth: z.number(),
-  cellHeight: z.number(),
-  cellPaddingTop: z.number(),
-  cellPaddingRight: z.number(),
-  cellPaddingBottom: z.number(),
-  cellPaddingLeft: z.number(),
-  pageWidth: z.number(),
-  pageHeight: z.number(),
+  columns: z.number().min(1),
+  rows: z.number().min(1),
+  bodyPaddingTop: z.number().min(0),
+  bodyPaddingRight: z.number().min(0),
+  bodyPaddingBottom: z.number().min(0),
+  bodyPaddingLeft: z.number().min(0),
+  cellHorizontalGap: z.number().min(0),
+  cellVerticalGap: z.number().min(0),
+  cellWidth: z.number().min(1),
+  cellHeight: z.number().min(1),
+  cellBaseFontSizePx: z.number().min(1),
+  cellPaddingTop: z.number().min(0),
+  cellPaddingRight: z.number().min(0),
+  cellPaddingBottom: z.number().min(0),
+  cellPaddingLeft: z.number().min(0),
+  pageWidth: z.number().min(1),
+  pageHeight: z.number().min(1),
   unit: z.literal('mm'),
 });
 
@@ -43,6 +44,7 @@ export const SHEET_PRESETS: { [name in keyof typeof SHEET_PRESETS_NICE_NAMES]: S
     cellVerticalGap: 0,
     cellWidth: 99.06,
     cellHeight: 38.1,
+    cellBaseFontSizePx: 16,
     cellPaddingTop: 5,
     cellPaddingRight: 5,
     cellPaddingBottom: 5,
@@ -89,6 +91,7 @@ function SheetCell(props: {
     cellWidth,
     cellHorizontalGap,
     cellHeight,
+    cellBaseFontSizePx,
     cellPaddingTop,
     cellPaddingRight,
     cellPaddingBottom,
@@ -129,6 +132,7 @@ function SheetCell(props: {
         padding: `${cellPaddingTop}${unit} ${cellPaddingRight}${unit} ${cellPaddingBottom}${unit} ${cellPaddingLeft}${unit}`,
         border: showBorders ? '1px solid black' : '0',
         borderRadius: '10px',
+        '--base-font-size': `${cellBaseFontSizePx}px`,
       }}
     >
       {inner}

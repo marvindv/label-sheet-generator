@@ -1,5 +1,5 @@
 .markdown {
-    font-size: 16px;
+    font-size: var(--base-font-size, 16px);
 
     h1 {
         font-size: 1.5em;

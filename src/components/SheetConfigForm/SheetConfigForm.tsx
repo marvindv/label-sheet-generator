@@ -23,6 +23,7 @@ import {
   SHEET_PRESETS,
   SHEET_PRESETS_NICE_NAMES,
   SheetConfig,
+  sheetConfigSchema,
   SheetPresetKey,
 } from '../Sheet/Sheet';
 import classes from './SheetConfigForm.module.css';
@@ -47,26 +48,7 @@ export interface Props {
   registerSetFormValue?: (callback: (newValue: SheetConfig) => void) => void;
 }
 
-const schema = z.object({
-  columns: z.number().min(1),
-  rows: z.number().min(1),
-  bodyPaddingTop: z.number().min(0),
-  bodyPaddingRight: z.number().min(0),
-  bodyPaddingBottom: z.number().min(0),
-  bodyPaddingLeft: z.number().min(0),
-  cellHorizontalGap: z.number().min(0),
-  cellVerticalGap: z.number().min(0),
-  cellWidth: z.number().min(1),
-  cellHeight: z.number().min(1),
-  cellPaddingTop: z.number().min(0),
-  cellPaddingRight: z.number().min(0),
-  cellPaddingBottom: z.number().min(0),
-  cellPaddingLeft: z.number().min(0),
-  pageWidth: z.number().min(1),
-  pageHeight: z.number().min(1),
-  unit: z.literal('mm'),
-});
-type FormData = z.infer<typeof schema>;
+type FormData = z.infer<typeof sheetConfigSchema>;
 
 export function SheetConfigForm(props: Props) {
   const [currentFormValue, setCurrentFormValue] = useState<FormData>(props.initialValue);
@@ -75,7 +57,7 @@ export function SheetConfigForm(props: Props) {
     initialValues: {
       ...props.initialValue,
     },
-    validate: zodResolver(schema),
+    validate: zodResolver(sheetConfigSchema),
     onValuesChange(values) {
       setCurrentFormValue(values);
       props.onValueChange(values);
@@ -323,6 +305,16 @@ export function SheetConfigForm(props: Props) {
                       min={1}
                       suffix={unit}
                       {...form.getInputProps('cellWidth')}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
+                    <NumberInput
+                      label="Cell base font size (in px)"
+                      key={form.key('cellBaseFontSizePx')}
+                      placeholder="Cell base font size (in px)"
+                      min={1}
+                      suffix="px"
+                      {...form.getInputProps('cellBaseFontSizePx')}
                     />
                   </Grid.Col>
                 </Grid>
