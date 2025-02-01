@@ -1,6 +1,7 @@
 import React from 'react';
 import Markdown from 'react-markdown';
 import QRCode from 'react-qr-code';
+import rehypeRaw from 'rehype-raw';
 import { z } from 'zod';
 import { Group } from '@mantine/core';
 import classes from './Sheet.module.css';
@@ -119,7 +120,9 @@ function SheetCell(props: {
           />
         </div>
         <div style={{ flex: 1 }}>
-          <Markdown className={classes.markdown}>{content.description}</Markdown>
+          <Markdown className={classes.markdown} rehypePlugins={[rehypeRaw]}>
+            {content.description}
+          </Markdown>
         </div>
       </Group>
     );

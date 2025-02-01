@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { IconBarcode, IconPrinter, IconTransferIn, IconTransferOut } from '@tabler/icons-react';
 import { saveAs } from 'file-saver';
+import Mustache from 'mustache';
 import { useReactToPrint } from 'react-to-print';
 import { z } from 'zod';
 import {
@@ -16,6 +17,7 @@ import {
   NumberInput,
   Stack,
   Text,
+  Textarea,
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -48,11 +50,14 @@ const importSchema = z.object({
   }),
 });
 
-function ASNForm(props: { onSubmit: (args: { startWith: number }) => void }) {
+function ASNForm(props: { onSubmit: (args: { startWith: number; textTemplate: string }) => void }) {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
       startWith: 1,
+      textTemplate: `<small>Paperless</small>
+
+**{{asn}}**`,
     },
     validate: {
       startWith: (val) => (Number.isInteger(val) && val >= 0 ? null : 'Invalid ASN'),
@@ -67,6 +72,16 @@ function ASNForm(props: { onSubmit: (args: { startWith: number }) => void }) {
         key={form.key('startWith')}
         min={0}
         {...form.getInputProps('startWith')}
+      />
+
+      <Textarea
+        autosize
+        withAsterisk
+        mt="md"
+        label="Template"
+        description="Defines how the text of each cell is to be rendered. Uses the Mustache template syntax with the variable `asn` for the generated ASN."
+        key={form.key('textTemplate')}
+        {...form.getInputProps('textTemplate')}
       />
 
       <Group justify="flex-end" mt="md">
@@ -173,7 +188,7 @@ export function TextQrCodePage() {
           starting with the given ASN.
         </Text>
         <ASNForm
-          onSubmit={({ startWith }) => {
+          onSubmit={({ startWith, textTemplate }) => {
             closeGenerateASNModal();
             const num = sheetConfig.rows * sheetConfig.columns;
             const newEntries: QrCodeWithTextFormValue = [];
@@ -181,7 +196,7 @@ export function TextQrCodePage() {
               // Format: ASN00001
               const content = `ASN${i.toString().padStart(5, '0')}`;
               newEntries.push({
-                text: content,
+                text: Mustache.render(textTemplate, { asn: content }),
                 qrCodeContent: content,
                 randomId: randomId(),
               });
