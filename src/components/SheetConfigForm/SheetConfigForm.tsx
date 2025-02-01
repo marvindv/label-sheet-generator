@@ -309,9 +309,9 @@ export function SheetConfigForm(props: Props) {
                   </Grid.Col>
                   <Grid.Col span={{ base: 12, sm: 6 }}>
                     <NumberInput
-                      label="Cell base font size (in px)"
+                      label="Cell base font size"
                       key={form.key('cellBaseFontSizePx')}
-                      placeholder="Cell base font size (in px)"
+                      placeholder="Cell base font size"
                       min={1}
                       suffix="px"
                       {...form.getInputProps('cellBaseFontSizePx')}
