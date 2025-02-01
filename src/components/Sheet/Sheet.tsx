@@ -17,6 +17,7 @@ export const sheetConfigSchema = z.object({
   cellWidth: z.number().min(1),
   cellHeight: z.number().min(1),
   cellBaseFontSizePx: z.number().min(1),
+  cellContentGap: z.number().min(0),
   cellPaddingTop: z.number().min(0),
   cellPaddingRight: z.number().min(0),
   cellPaddingBottom: z.number().min(0),
@@ -45,6 +46,7 @@ export const SHEET_PRESETS: { [name in keyof typeof SHEET_PRESETS_NICE_NAMES]: S
     cellWidth: 99.06,
     cellHeight: 38.1,
     cellBaseFontSizePx: 16,
+    cellContentGap: 5,
     cellPaddingTop: 5,
     cellPaddingRight: 5,
     cellPaddingBottom: 5,
@@ -92,6 +94,7 @@ function SheetCell(props: {
     cellHorizontalGap,
     cellHeight,
     cellBaseFontSizePx,
+    cellContentGap,
     cellPaddingTop,
     cellPaddingRight,
     cellPaddingBottom,
@@ -101,7 +104,12 @@ function SheetCell(props: {
   let inner;
   if (content.type === 'qr-code-with-description') {
     inner = (
-      <Group preventGrowOverflow style={{ maxHeight: '100%', height: '100%' }}>
+      <Group
+        preventGrowOverflow
+        style={{ maxHeight: '100%', height: '100%' }}
+        wrap="nowrap"
+        gap={`${cellContentGap}${unit}`}
+      >
         <div style={{ flex: 0, height: '100%' }}>
           <QRCode
             size={256}

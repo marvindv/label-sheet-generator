@@ -317,6 +317,16 @@ export function SheetConfigForm(props: Props) {
                       {...form.getInputProps('cellBaseFontSizePx')}
                     />
                   </Grid.Col>
+                  <Grid.Col span={{ base: 12, sm: 6 }}>
+                    <NumberInput
+                      label="Cell content gap"
+                      key={form.key('cellContentGap')}
+                      placeholder="Cell content gap"
+                      min={1}
+                      suffix={unit}
+                      {...form.getInputProps('cellContentGap')}
+                    />
+                  </Grid.Col>
                 </Grid>
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
