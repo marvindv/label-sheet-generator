@@ -125,6 +125,7 @@ export function SheetConfigForm(props: Props) {
           <Select
             label="Load a sheet preset"
             placeholder="Pick preset"
+            description="Hint on Brother HL-3152CDW adjusted presets: Place the label sheet in the standard paper tray with the back of the label sheet facing you and the top of the backside facing towards the backside of the printer."
             data={SHEET_PRESET_KEYS.map((key) => ({
               label: SHEET_PRESETS_NICE_NAMES[key],
               value: key,
